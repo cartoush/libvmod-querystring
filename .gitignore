@@ -70,3 +70,5 @@ vmod-*.tar.[gx]z
 control
 changelog
 copyright
+
+src/vmod_vcs_version.txt

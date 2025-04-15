@@ -33,6 +33,10 @@ nodist_libvmod_querystring_la_SOURCES = \
 	vcc_querystring_if.c \
 	vcc_querystring_if.h
 
+vmod_vcs_version.txt: vcc_querystring_if.c
+
+DISTCLEANFILES = vmod_vcs_version.txt
+
 @BUILD_VMOD_QUERYSTRING@
 
 # Test suite
@@ -69,6 +73,7 @@ TESTS = \
 
 dist_doc_DATA = \
 	vmod_querystring.vcc \
+	vmod_vcs_version.txt \
 	$(TESTS)
 
 dist_man_MANS = vmod_querystring.3
