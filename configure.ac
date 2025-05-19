@@ -20,13 +20,20 @@ AC_INIT([libvmod-querystring],
 	[https://github.com/dridi/libvmod-querystring/issues],
 	[vmod-querystring],
 	[https://github.com/dridi/libvmod-querystring])
-AC_COPYRIGHT([Copyright (C) 2012-2020  Dridi Boukelmoune])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
-AC_CONFIG_SRCDIR([src/vmod_querystring.vcc])
 AC_CONFIG_HEADER([config.h])
+AC_COPYRIGHT([Copyright (C) 2012-2020  Dridi Boukelmoune])
 
 AM_INIT_AUTOMAKE([1.12 -Wall -Werror foreign parallel-tests])
+AM_SILENT_RULES([yes])
+
+AC_ARG_VAR([RST2MAN], [the program to build manuals from reStructuredText])
+AC_CHECK_PROGS(RST2MAN, [rst2man rst2man.py])
+
+VARNISH_PREREQ([7.5.0])
+VARNISH_VMODS([querystring])
+
 AM_PROG_AR
 
 LT_PREREQ([2.2.6])
@@ -82,23 +89,9 @@ then
 	QS_FORCE_CFLAGS([-O0 -g -fprofile-arcs -ftest-coverage])
 fi
 
-if test "$enable_docs" != no
-then
-	QS_CHECK_PROG([RST2MAN], [rst2man rst2man.py])
-else
-	AC_SUBST([RST2MAN], [:])
-fi
-
-# $QS_VARNISH_VERSION is set by the bootstrap script
-
-VARNISH_PREREQ([${QS_VARNISH_VERSION:-6.0.6}])
-VARNISH_VMODS([querystring])
-
-QS_CHECK_SYM([WS_ReserveAll], [#include <cache/cache.h>],
-	[$VARNISHAPI_CFLAGS])
-
-QS_CHECK_SYM([WS_Reservation], [#include <cache/cache.h>],
-	[$VARNISHAPI_CFLAGS])
+AC_CHECK_HEADERS([cache/cache.h], [],
+    [AC_MSG_ERROR([Missing \$VARNISHSRC development files.])],
+	[[#include <cache/cache.h>]])
 
 AC_CONFIG_FILES([
 	Makefile
@@ -117,6 +110,8 @@ AS_ECHO("
 	varnish:      $VARNISH_VERSION
 	prefix:       $prefix
 	vmoddir:      $vmoddir
+	vcldir:       $vcldir
+	pkgvcldir:    $pkgvcldir
 
 	compiler:     $CC
 	cflags:       $CFLAGS

@@ -14,9 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = src
-
 ACLOCAL_AMFLAGS = -I m4 -I ${VARNISHAPI_DATAROOTDIR}/aclocal
+
+DISTCHECK_CONFIGURE_FLAGS = RST2MAN=:
+
+SUBDIRS = src
 
 EXTRA_DIST = \
 	README.rst \

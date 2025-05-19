@@ -15,17 +15,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AM_CFLAGS = $(VARNISHAPI_CFLAGS)
-AM_LDFLAGS = $(VMOD_LDFLAGS)
 
 if LCOV_ENABLED
 AM_CPPFLAGS = -DWITHOUT_ASSERTS
 endif
 
-# VMOD library
+# Modules
 
 vmod_LTLIBRARIES = libvmod_querystring.la
 
-dist_man_MANS = vmod_querystring.3
+libvmod_querystring_la_LDFLAGS = $(VMOD_LDFLAGS)
 
 libvmod_querystring_la_SOURCES = \
 	vmod_querystring.c
@@ -36,42 +35,52 @@ nodist_libvmod_querystring_la_SOURCES = \
 
 @BUILD_VMOD_QUERYSTRING@
 
+# Test suite
+
+AM_TESTS_ENVIRONMENT = \
+	PATH="$(abs_builddir):$(VMOD_TEST_PATH):$(PATH)" \
+	LD_LIBRARY_PATH="$(VARNISH_LIBRARY_PATH)"
+TEST_EXTENSIONS = .vtc
+VTC_LOG_COMPILER = varnishtest -v
+AM_VTC_LOG_FLAGS = \
+	-p vcl_path="$(abs_top_srcdir)/vcl:$(VARNISHAPI_VCLDIR)" \
+	-p vmod_path="$(abs_builddir)/.libs:$(vmoddir):$(VARNISHAPI_VMODDIR)"
+
+TESTS = \
+	vtc/e00001.vtc \
+	vtc/f00001.vtc \
+	vtc/f00002.vtc \
+	vtc/f00003.vtc \
+	vtc/f00004.vtc \
+	vtc/f00005.vtc \
+	vtc/f00006.vtc \
+	vtc/f00007.vtc \
+	vtc/f00008.vtc \
+	vtc/g00001.vtc \
+	vtc/m00001.vtc \
+	vtc/p00001.vtc \
+	vtc/p00002.vtc \
+	vtc/p00003.vtc \
+	vtc/r00022.vtc \
+	vtc/r00026.vtc \
+	vtc/w00001.vtc
+
 # Documentation
 
+dist_doc_DATA = \
+	vmod_querystring.vcc \
+	$(TESTS)
+
+dist_man_MANS = vmod_querystring.3
+
+CLEANFILES = vmod_querystring.pdf
+
 pdf-local: vmod_querystring.pdf
+
 
 .rst.pdf:
 	rst2pdf $< $@
 
-# Test suite
 
-AM_TESTS_ENVIRONMENT = \
-	PATH="$(VMOD_TEST_PATH):$(PATH)" \
-	LD_LIBRARY_PATH="$(VARNISH_LIBRARY_PATH):$(LD_LIBRARY_PATH)"
-TEST_EXTENSIONS = .vtc
-VTC_LOG_COMPILER = varnishtest -v
-AM_VTC_LOG_FLAGS = -p vmod_path="$(abs_builddir)/.libs:$(VARNISHAPI_VMODDIR)"
-
-TESTS = \
-	tests/e00001.vtc \
-	tests/f00001.vtc \
-	tests/f00002.vtc \
-	tests/f00003.vtc \
-	tests/f00004.vtc \
-	tests/f00005.vtc \
-	tests/f00006.vtc \
-	tests/f00007.vtc \
-	tests/f00008.vtc \
-	tests/g00001.vtc \
-	tests/m00001.vtc \
-	tests/p00001.vtc \
-	tests/p00002.vtc \
-	tests/p00003.vtc \
-	tests/r00022.vtc \
-	tests/r00026.vtc \
-	tests/w00001.vtc
-
-# misc
-
-EXTRA_DIST = vmod_querystring.vcc $(TESTS)
-CLEANFILES = vmod_querystring.pdf
+.rst.1:
+	$(AM_V_GEN) $(RST2MAN) $< $@

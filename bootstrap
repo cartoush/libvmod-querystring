@@ -1,16 +1,11 @@
 #!/bin/sh
-#
-# Written by Dridi Boukelmoune <dridi.boukelmoune@gmail.com>
-#
-# This file is in the public domain.
 
 set -e
 set -u
 
-WORK_DIR="$PWD"
-ROOT_DIR="$(dirname "$0")"
+WORK_DIR=$(pwd)
+ROOT_DIR=$(dirname "$0")
 
-test -n "$ROOT_DIR"
 cd "$ROOT_DIR"
 
 if ! command -v libtoolize >/dev/null
@@ -19,16 +14,12 @@ then
 	alias libtoolize=glibtoolize
 fi
 
-aclocal -I .
+mkdir -p m4
+aclocal
 libtoolize --copy --force
 autoheader
 automake --add-missing --copy --foreign
 autoconf
 
 cd "$WORK_DIR"
-"$ROOT_DIR"/configure \
-	--enable-silent-rules \
-	--enable-warnings \
-	--enable-docs \
-	"$@" \
-	QS_VARNISH_VERSION=6.0.6
+"$ROOT_DIR"/configure "$@"

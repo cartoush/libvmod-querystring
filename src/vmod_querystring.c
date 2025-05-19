@@ -58,14 +58,6 @@
 		}							\
 	} while (0)
 
-#ifndef HAVE_WS_RESERVEALL
-#  define WS_ReserveAll(ws) WS_Reserve(ws, 0)
-#endif
-
-#ifndef HAVE_WS_RESERVATION
-#  define WS_Reservation(ws) WS_Front(ws)
-#endif
-
 /***********************************************************************
  * Type definitions
  */
