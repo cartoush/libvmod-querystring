@@ -13,10 +13,10 @@ Description
 ===========
 
 The purpose of this module is to give you a fine-grained control over a URL's
-query-string in Varnish Cache. It's possible to remove the query-string, clean
+query-string in Vinyl Cache. It's possible to remove the query-string, clean
 it, sort its parameters or filter it to only keep a subset of them.
 
-This can greatly improve your hit ratio and efficiency with Varnish, because
+This can greatly improve your hit ratio and efficiency with Vinyl, because
 by default two URLs with the same path but different query-strings are also
 different. This is what the RFCs mandate but probably not what you usually
 want for your web site or application.
@@ -29,7 +29,7 @@ with this kind of query-strings.
 Examples
 ========
 
-Consider the default hashing in Varnish::
+Consider the default hashing in Vinyl::
 
     sub vcl_hash {
         hash_data(req.url);
@@ -43,10 +43,10 @@ Consider the default hashing in Varnish::
 
 Clients requesting ``/index.html`` and ``/index.html?`` will most likely get
 the exact same response with most web servers / frameworks / stacks / wossname
-but Varnish will see two different URLs and end up with two duplicate objects
+but Vinyl will see two different URLs and end up with two duplicate objects
 in the cache.
 
-This is a problem hard to solve with Varnish alone because it requires some
+This is a problem hard to solve with Vinyl alone because it requires some
 knowledge of the back-end application but it can usually be mitigated with
 a couple assumptions:
 
@@ -69,7 +69,7 @@ In this case it can be solved like this::
         return (lookup);
     }
 
-This way Varnish will get the same unique hash for both ``/index.html`` and
+This way Vinyl will get the same unique hash for both ``/index.html`` and
 ``/index.html?`` but the back-end application will receive the original client
 request. Depending on your requirements/goals, you may also take a different
 approach.
@@ -84,7 +84,7 @@ you may want to remove Google Analytics parameters from requests because:
 - they could create cache duplicates for every campaigns
 - the application does not need them, only marketing folks
 - the user's browser makes AJAX calls to GA regardless
-- they can be delivered to marketing via ``varnishncsa``
+- they can be delivered to marketing via ``vinylncsa``
 
 It could be solved like this::
 
@@ -105,7 +105,7 @@ This is enough to remove all Analytics parameters you may use (``utm_source``,
 ``utm_medium``, ``utm_campaign`` etc) and keep the rest of the query-string
 unless there are no other parameters in which case it's simply removed. The
 log statement allows you to get those analytics parameters (and only them) in
-``varnishncsa`` using the format string ``%{VCL_Log:ga}x``.
+``vinylncsa`` using the format string ``%{VCL_Log:ga}x``.
 
 All functions are documented in the manual page ``vmod_querystring(3)``.
 
@@ -125,13 +125,13 @@ it, start by grabbing the latest release [1]_ and follow these steps::
     make check # optional
     sudo make install
 
-You only need to have Varnish (at least 6.0.6) and its development files
+You only need to have Vinyl (at least 9.0.0) and its development files
 installed on your system. Instead of manually installing the module you can
 build packages, see below. The ``configure`` script also needs ``pkg-config``
-installed to find Varnish development files.
+installed to find Vinyl development files.
 
-If your Varnish installation did not use the default ``/usr`` prefix, you
-will likely need to at least set the ``pkg-config`` path to find your Varnish
+If your Vinyl installation did not use the default ``/usr`` prefix, you
+will likely need to at least set the ``pkg-config`` path to find your Vinyl
 installation. For example add this in your environment before running
 ``./configure``::
 
@@ -216,7 +216,7 @@ When working on the source code, there are additional dependencies:
 - automake
 - libtool
 - rst2man (python3-docutils)
-- varnish (at least 6.0.6)
+- vinyl (at least 9.0.0)
 
 You will notice the lack of a ``configure`` script, it needs to be generated
 with the various autotools programs. Instead, you can use the ``bootstrap``
@@ -230,7 +230,7 @@ of the generated ``configure`` script. Once ``bootstrap`` is done, you can
 later run the ``configure`` script directly if you need to reconfigure your
 build tree or use more than one VPATH.
 
-If your Varnish installation did not use the default ``/usr`` prefix, you need
+If your Vinyl installation did not use the default ``/usr`` prefix, you need
 this in your environment before running ``./bootstrap``::
 
     export ACLOCAL_PATH=${PREFIX}/share/aclocal

@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AM_CFLAGS = $(VARNISHAPI_CFLAGS)
+AM_CFLAGS = $(VINYLAPI_CFLAGS)
 AM_LDFLAGS = $(VMOD_LDFLAGS)
 
 if LCOV_ENABLED
@@ -47,10 +47,10 @@ pdf-local: vmod_querystring.pdf
 
 AM_TESTS_ENVIRONMENT = \
 	PATH="$(VMOD_TEST_PATH):$(PATH)" \
-	LD_LIBRARY_PATH="$(VARNISH_LIBRARY_PATH):$(LD_LIBRARY_PATH)"
+	LD_LIBRARY_PATH="$(VINYL_LIBRARY_PATH):$(LD_LIBRARY_PATH)"
 TEST_EXTENSIONS = .vtc
-VTC_LOG_COMPILER = varnishtest -v
-AM_VTC_LOG_FLAGS = -p vmod_path="$(abs_builddir)/.libs:$(VARNISHAPI_VMODDIR)"
+VTC_LOG_COMPILER = vinyltest -v
+AM_VTC_LOG_FLAGS = -p vmod_path="$(abs_builddir)/.libs:$(VINYLAPI_VMODDIR)"
 
 TESTS = \
 	tests/e00001.vtc \

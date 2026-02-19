@@ -34,13 +34,6 @@
 
 #include "vcc_querystring_if.h"
 
-/* Varnish < 6.2 compat */
-#ifndef VPFX
-  #define VPFX(a) vmod_ ## a
-  #define VARGS(a) vmod_ ## a ## _arg
-  #define VENUM(a) vmod_enum_ ## a
-#endif
-
 /* End Of Query Parameter */
 #define EOQP(c) (c == '\0' || c == '&')
 
@@ -57,14 +50,6 @@
 			}						\
 		}							\
 	} while (0)
-
-#ifndef HAVE_WS_RESERVEALL
-#  define WS_ReserveAll(ws) WS_Reserve(ws, 0)
-#endif
-
-#ifndef HAVE_WS_RESERVATION
-#  define WS_Reservation(ws) WS_Front(ws)
-#endif
 
 /***********************************************************************
  * Type definitions

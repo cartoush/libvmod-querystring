@@ -34,8 +34,8 @@ env:
     - CFLAGS=-O3
     - CFLAGS=-Os
     - MAKE_TARGET=distcheck
-    - VARNISH_BRANCH=master
-    - VARNISH_BRANCH=6.0
+    - VINYL_BRANCH=main
+    - VINYL_BRANCH=9.0
 
 matrix:
   include:
@@ -59,7 +59,7 @@ matrix:
 
 install:
   - set -e
-  - travis/install_varnish.sh
+  - travis/install_vinyl.sh
   - travis/create_pbuilder.sh
   - travis/create_sbuild.sh
 

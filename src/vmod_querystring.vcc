@@ -1,11 +1,11 @@
-$Module querystring 3 Varnish Query-String Module
+$Module querystring 3 "Vinyl Query-String Module"
 $ABI vrt
 $Synopsis manual
 
 DESCRIPTION
 ===========
 
-This module is a tool for query-string filtering in Varnish Cache. It works
+This module is a tool for query-string filtering in Vinyl Cache. It works
 with ``application/x-www-form-urlencoded`` strings that are commonly used on
 the web. Such a query-string is interpreted as a key/values store encoded with
 the following syntax::
@@ -16,7 +16,7 @@ The query-string parsing is very lenient and will tolerate malformed strings.
 Assuming that a legitimate client might build a malformed query-string that
 would be empty or include a trailing & or spurious &s in the middle, it may be
 a good idea not to fail such requests and instead get rid of the noise that
-might misguide Varnish and hurt your hit rate. Empty parameters are ignored,
+might misguide Vinyl and hurt your hit rate. Empty parameters are ignored,
 and parameters are considered empty when their names are empty::
 
     next=empty&&previous=empty&=no-name-means-empty&no-value-is-fine
@@ -36,7 +36,7 @@ For example::
 
 If it doesn't make any difference to your back-end application, you may also
 sort the parameters inside the query-string and remove duplicates. It will
-make the hashing more deterministic for Varnish, possibly improving your hit
+make the hashing more deterministic for Vinyl, possibly improving your hit
 rate even more.
 
 .. raw:: pdf
@@ -121,7 +121,7 @@ Description
     The ``string`` argument is compiled to a regular expression that will be
     used as the matching criterion. If the regular expression is invalid, it
     will fail the ``vcl.load`` command and report the error in the
-    ``varnish-cli`` output.
+    ``vinyl-cli`` output.
 
 $Method STRING .apply([STRING url], ENUM {keep, drop} mode = "drop")
 
@@ -198,8 +198,8 @@ SEE ALSO
 ========
 
 ``vcl``\(7),
-``varnishd``\(1),
-``varnish-cli``\(7),
+``vinyld``\(1),
+``vinyl-cli``\(7),
 ``glob``\(7)
 
 |

@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-varnishtest "Check vcl.discard with a querystring filter"
+vtest "Check vcl.discard with a querystring filter"
 
-varnish v1 -arg "-j none"
-varnish v1 -vcl {
+vinyl v1 -arg "-j none"
+vinyl v1 -vcl {
 	import querystring;
 
 	backend be { .host = "${bad_ip}"; .port = "9080"; }
@@ -30,9 +30,9 @@ varnish v1 -vcl {
 	}
 } -start
 
-varnish v1 -vcl {
+vinyl v1 -vcl {
 	backend be { .host = "${bad_ip}"; .port = "9080"; }
 }
 
-varnish v1 -cliok "vcl.discard vcl1"
-varnish v1 -expect n_vcl == 1
+vinyl v1 -cliok "vcl.discard vcl1"
+vinyl v1 -expect n_vcl == 1

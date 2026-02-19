@@ -14,12 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-varnishtest "Clean empty parameters and query-strings"
+vtest "Clean empty parameters and query-strings"
 
 server s1 "" -start
 
-varnish v1 -arg "-j none"
-varnish v1 -vcl+backend {
+vinyl v1 -arg "-j none"
+vinyl v1 -vcl+backend {
 	import querystring;
 
 	sub vcl_recv {

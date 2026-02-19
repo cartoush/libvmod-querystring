@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-varnishtest "Workspace overflow"
+vtest "Workspace overflow"
 
 server s1 {
 	rxreq
@@ -30,8 +30,8 @@ server s1 {
 	txresp
 } -start
 
-varnish v1 -arg "-j none"
-varnish v1 -vcl+backend {
+vinyl v1 -arg "-j none"
+vinyl v1 -vcl+backend {
 	import vtc;
 	import querystring;
 

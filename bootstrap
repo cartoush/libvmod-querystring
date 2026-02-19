@@ -31,4 +31,4 @@ cd "$WORK_DIR"
 	--enable-warnings \
 	--enable-docs \
 	"$@" \
-	QS_VARNISH_VERSION=6.0.6
+	QS_VINYL_VERSION=6.0.6

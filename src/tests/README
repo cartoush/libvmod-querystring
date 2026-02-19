@@ -5,7 +5,7 @@ Naming scheme
 -------------
 
 	The intent is to make this test suite look familiar and copy
-	what the Varnish Cache test suite is doing:
+	what the Vinyl Cache test suite is doing:
 
 		[id]%05d.vtc
 

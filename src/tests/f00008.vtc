@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-varnishtest "Omit the URL argument"
+vtest "Omit the URL argument"
 
 server s1 {
 	rxreq
@@ -23,8 +23,8 @@ server s1 {
 	expect req.http.Extracted-QS == "utm_source=git&sessid_123=abc&_=456"
 } -start
 
-varnish v1 -arg "-j none"
-varnish v1 -vcl+backend {
+vinyl v1 -arg "-j none"
+vinyl v1 -vcl+backend {
 	import querystring;
 
 	sub vcl_init {

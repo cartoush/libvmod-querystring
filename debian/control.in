@@ -3,11 +3,11 @@ Priority: optional
 Maintainer: Dridi Boukelmoune <dridi.boukelmoune@gmail.com>
 Build-Depends:
  debhelper (>= 9),
- libvarnishapi-dev (>= 6.0.6) |
- varnish-dev (>= 6.0.6),
+ libvinylapi-dev (>= 9.0.0) |
+ vinyl-dev (>= 9.0.0),
  pkg-config (>= 0.21),
  python3-docutils,
- varnish (>= 6.0.6)
+ vinyl (>= 9.0.0)
 Standards-Version: 3.9.5
 Section: libs
 Homepage: @PACKAGE_URL@
@@ -17,12 +17,12 @@ Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
- ${varnish:Depends},
-Description: QueryString module for Varnish Cache
+ ${vinyl:Depends},
+Description: QueryString module for Vinyl Cache
  The purpose of this module is to give you a fine-grained control over a URL's
- query-string in Varnish Cache. It's possible to remove the query-string, clean
+ query-string in Vinyl Cache. It's possible to remove the query-string, clean
  it, sort its parameters or filter it to only keep a subset of them.
- This can greatly improve your hit ratio and efficiency with Varnish, because
+ This can greatly improve your hit ratio and efficiency with Vinyl, because
  by default two URLs with the same path but different query-strings are also
  different. This is what the RFCs mandate but probably not what you usually
  want for your web site or application.
