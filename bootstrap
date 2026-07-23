@@ -1,34 +1,16 @@
 #!/bin/sh
-#
-# Written by Dridi Boukelmoune <dridi.boukelmoune@gmail.com>
-#
-# This file is in the public domain.
 
 set -e
 set -u
 
-WORK_DIR="$PWD"
-ROOT_DIR="$(dirname "$0")"
+ROOT_DIR=$(dirname "$0")
 
-test -n "$ROOT_DIR"
-cd "$ROOT_DIR"
+pkg-config --exists --print-errors vinylapi
 
-if ! command -v libtoolize >/dev/null
-then
-	echo "libtoolize: command not found, falling back to glibtoolize" >&2
-	alias libtoolize=glibtoolize
-fi
+VINYLAPI_DATAROOTDIR=$(pkg-config --variable=datarootdir vinylapi)
+export VINYLAPI_DATAROOTDIR
 
-aclocal -I .
-libtoolize --copy --force
-autoheader
-automake --add-missing --copy --foreign
-autoconf
+mkdir -p m4
+autoreconf -i "$ROOT_DIR"
 
-cd "$WORK_DIR"
-"$ROOT_DIR"/configure \
-	--enable-silent-rules \
-	--enable-warnings \
-	--enable-docs \
-	"$@" \
-	QS_VINYL_VERSION=6.0.6
+"$ROOT_DIR"/configure "$@"

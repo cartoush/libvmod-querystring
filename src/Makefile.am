@@ -15,17 +15,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AM_CFLAGS = $(VINYLAPI_CFLAGS)
-AM_LDFLAGS = $(VMOD_LDFLAGS)
 
-if LCOV_ENABLED
-AM_CPPFLAGS = -DWITHOUT_ASSERTS
-endif
-
-# VMOD library
+# Modules
 
 vmod_LTLIBRARIES = libvmod_querystring.la
 
-dist_man_MANS = vmod_querystring.3
+libvmod_querystring_la_LDFLAGS = \
+	$(VMOD_LDFLAGS)
 
 libvmod_querystring_la_SOURCES = \
 	vmod_querystring.c
@@ -33,6 +29,10 @@ libvmod_querystring_la_SOURCES = \
 nodist_libvmod_querystring_la_SOURCES = \
 	vcc_querystring_if.c \
 	vcc_querystring_if.h
+
+DISTCLEANFILES = vmod_vcs_version.txt vmod_querystring.pdf
+
+vmod_vcs_version.txt: $(no_dist_libvmod_querystring_la_SOURCES)
 
 @BUILD_VMOD_QUERYSTRING@
 
@@ -71,7 +71,20 @@ TESTS = \
 	tests/r00026.vtc \
 	tests/w00001.vtc
 
-# misc
+# Documentation
 
-EXTRA_DIST = vmod_querystring.vcc $(TESTS)
-CLEANFILES = vmod_querystring.pdf
+dist_doc_DATA = \
+	vmod_querystring.vcc \
+	$(TESTS)
+
+if HAVE_VCS_VMOD_VERSION
+dist_doc_DATA += vmod_vcs_version.txt
+endif
+
+dist_man_MANS = \
+	vmod_querystring.3
+
+
+.rst.1:
+	$(AM_V_GEN) $(RST2MAN) $< $@
+

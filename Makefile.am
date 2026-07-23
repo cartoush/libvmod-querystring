@@ -14,9 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = src
-
 ACLOCAL_AMFLAGS = -I m4 -I ${VINYLAPI_DATAROOTDIR}/aclocal
+
+SUBDIRS = src
 
 EXTRA_DIST = \
 	README.rst \
@@ -28,6 +28,5 @@ dist_doc_DATA = \
 	CONTRIBUTORS \
 	LICENSE
 
-include lcov.am
 include rpm.am
 include deb.am
