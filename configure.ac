@@ -74,20 +74,24 @@ then
 	])
 fi
 
-AM_CONDITIONAL([LCOV_ENABLED], [test "$enable_lcov" != no])
-if test "$enable_lcov" != no
-then
-	QS_CHECK_PROG([LCOV], [lcov])
-	QS_CHECK_PROG([GENHTML], [genhtml])
-	QS_FORCE_CFLAGS([-O0 -g -fprofile-arcs -ftest-coverage])
-fi
+AC_ARG_VAR([RST2MAN], [the program to build manuals from reStructuredText])
+AC_CHECK_PROGS(RST2MAN, [rst2man rst2man.py])
 
-if test "$enable_docs" != no
-then
-	QS_CHECK_PROG([RST2MAN], [rst2man rst2man.py])
-else
-	AC_SUBST([RST2MAN], [:])
-fi
+AC_ARG_WITH([lcov],
+    AS_HELP_STRING(
+        [--with-lcov=PATH],
+        [Location of lcov to generate coverage data (auto)]),
+    [LCOV="$withval"],
+    [AC_CHECK_PROGS(LCOV, [lcov], [])])
+AM_CONDITIONAL(HAVE_LCOV, [test -n "$LCOV"])
+
+AC_ARG_WITH([genhtml],
+    AS_HELP_STRING(
+        [--with-genhtml=PATH],
+        [Location of genhtml to generate coverage reports (auto)]),
+    [GENHTML="$withval"],
+    [AC_CHECK_PROGS(GENHTML, [genhtml], [])])
+AM_CONDITIONAL(HAVE_GENHTML, [test -n "$GENHTML"])
 
 # $QS_VINYL_VERSION is set by the bootstrap script
 

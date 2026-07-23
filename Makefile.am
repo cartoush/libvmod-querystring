@@ -30,3 +30,6 @@ dist_doc_DATA = \
 
 include rpm.am
 include deb.am
+
+coverage:
+	$(MAKE) $(AM_MAKEFLAGS) -C src coverage
